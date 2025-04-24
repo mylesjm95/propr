@@ -6,19 +6,32 @@ import { AuthModal } from "@/components/auth/AuthModal";
 
 export function AuthModalButton() {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("login");
+  
+  const openModal = (tab) => {
+    setActiveTab(tab);
+    setIsOpen(true);
+  };
   
   return (
-    <>
+    <div className="flex items-center space-x-2">
+      <Button 
+        variant="outline" 
+        onClick={() => openModal("login")}
+      >
+        Login
+      </Button>
       <Button 
         variant="default" 
-        onClick={() => setIsOpen(true)}
+        onClick={() => openModal("signup")}
       >
-        Sign In
+        Sign Up
       </Button>
       <AuthModal 
         isOpen={isOpen} 
-        onOpenChange={setIsOpen} 
+        onOpenChange={setIsOpen}
+        defaultTab={activeTab}
       />
-    </>
+    </div>
   );
 }

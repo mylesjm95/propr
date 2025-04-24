@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { ContactAgentButton } from "@/components/condo/ContactAgentButton";
 
 export default function CondoHeroSection({ 
   condoAddress,
@@ -94,9 +95,7 @@ export default function CondoHeroSection({
                   <p className="mt-4 text-sm text-muted-foreground">{agent.bio}</p>
                 </div>
                 
-                <Button className="w-full mt-auto">
-                  Contact Agent
-                </Button>
+                <ContactAgentButton />
               </div>
             </div>
           </div>

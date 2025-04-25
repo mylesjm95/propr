@@ -58,7 +58,7 @@ export default function CondoHeroSection({
                 {/* Agent Avatar */}
                 <div className="relative w-40 h-40 mb-4 overflow-hidden">
                   <img 
-                    src={agent.image} 
+                    src={agent.image}
                     alt={agent.name}
                     className="rounded-full object-cover w-full h-full border-4 border-background shadow-md" 
                   />
@@ -101,13 +101,14 @@ export default function CondoHeroSection({
           </div>
           
           {/* Right Column - Property Images (Reversed) */}
-          <div className="lg:col-span-8 relative h-full overflow-hidden rounded-lg">
-            <div className="relative h-full w-full">
-              <img 
-                src={condo.images[activeImageIndex]} 
-                alt={`${condo.name} - ${activeImageIndex + 1}`} 
-                className="h-full w-full object-cover"
-              />
+          <div className="lg:col-span-8 flex flex-col h-full">
+            <div className="relative flex-grow overflow-hidden rounded-lg">
+              <div className="relative h-full w-full">
+                <img 
+                  src={condo.images[activeImageIndex]} 
+                  alt={`${condo.name} - ${activeImageIndex + 1}`} 
+                  className="h-full w-full object-cover"
+                />
               
               {/* Image Navigation */}
               <div className="absolute inset-x-0 bottom-4 flex justify-center space-x-2">
@@ -151,6 +152,7 @@ export default function CondoHeroSection({
                   </svg>
                 </Button>
               </div>
+              </div>
             </div>
           </div>
         </div>
@@ -161,14 +163,6 @@ export default function CondoHeroSection({
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Left Column - Condo Details */}
           <div className="md:col-span-8">
-            <h1 className="text-3xl font-bold tracking-tight">{condo.name}</h1>
-            <p className="text-lg text-muted-foreground mt-1">{condo.address}</p>
-            <div className="flex items-center gap-2 mt-3">
-              <span className="bg-secondary text-secondary-foreground px-2 py-1 rounded text-xs font-medium">
-                {condo.neighborhood}
-              </span>
-              <span className="text-sm text-muted-foreground">{condo.city}</span>
-            </div>
             
             {/* Key Facts */}
             <div className="mt-8">

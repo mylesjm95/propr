@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { ContactAgentButton } from "@/components/condo/ContactAgentButton";
 
-export default function CondoHeroSection({ 
+function CondoHeroSection ({ 
   condoAddress,
   condo = {
     name: "Liberty Lakeview Towers",
@@ -45,70 +45,41 @@ export default function CondoHeroSection({
   }
 }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const decodedAddress = decodeURIComponent(condoAddress);
 
   return (
-    <div className="w-full bg-background">
-      {/* Hero Section - Two Column Layout */}
-      <div className="container mx-auto px-6 py-8 max-w-screen-xl">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-h-[500px]">
-          {/* Left Column - Agent Information (Reversed) */}
-          <div className="lg:col-span-4 h-full">
-            <div className="bg-card border shadow-sm rounded-lg h-full flex flex-col">
-              <div className="p-6 flex flex-col items-center">
-                {/* Agent Avatar */}
-                <div className="relative w-40 h-40 mb-4 overflow-hidden">
-                  <img 
-                    src={agent.image}
-                    alt={agent.name}
-                    className="rounded-full object-cover w-full h-full border-4 border-background shadow-md" 
-                  />
-                </div>
-                
-                {/* Agent Details */}
-                <div className="text-center mb-4">
-                  <h3 className="text-xl font-bold">{agent.name}</h3>
-                  <p className="text-muted-foreground">{agent.title}</p>
-                </div>
-                
-                <div className="w-full space-y-3 flex-1">
-                  <div className="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-4 text-muted-foreground">
-                      <polyline points="12 8 12 12 14 14" />
-                      <path d="M3.05 11a9 9 0 1 1 .5 4" />
-                    </svg>
-                    <span className="text-sm">{agent.experience} experience</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-4 text-muted-foreground">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                    </svg>
-                    <span className="text-sm">{agent.phone}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-4 text-muted-foreground">
-                      <rect width="20" height="16" x="2" y="4" rx="2" />
-                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                    </svg>
-                    <span className="text-sm">{agent.email}</span>
-                  </div>
-                  
-                  <p className="mt-4 text-sm text-muted-foreground">{agent.bio}</p>
-                </div>
-                
-                <ContactAgentButton />
+    <>
+      {/* Hero Section with dark background */}
+      <section className="pt-32 pb-16 md:py-32 lg:py-40 relative overflow-hidden bg-[#292a2d]">
+        {/* Background that extends to the top of the page */}
+        <div className="absolute inset-0 bg-[#292a2d] -z-10"></div>
+        
+        <div className="container mx-auto px-4 max-w-[90%]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            {/* Left column - Text content */}
+            <div className="flex flex-col">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-normal text-white mb-6">
+                {decodedAddress}
+              </h1>
+              
+              <p className="text-lg md:text-xl text-gray-300 mb-8">
+                {condo.propertyType} in {condo.neighborhood} • {condo.suites} Suites • Built {condo.yearBuilt}
+              </p>
+              
+              <div className="mt-4">
+                <Button size="lg" className="text-lg px-8 py-6 bg-white text-[#292a2d] hover:bg-gray-200 rounded-md">
+                  View Listings
+                </Button>
               </div>
             </div>
-          </div>
-          
-          {/* Right Column - Property Images (Reversed) */}
-          <div className="lg:col-span-8 flex flex-col h-full">
-            <div className="relative flex-grow overflow-hidden rounded-lg">
-              <div className="relative h-full w-full">
-                <img 
-                  src={condo.images[activeImageIndex]} 
-                  alt={`${condo.name} - ${activeImageIndex + 1}`} 
-                  className="h-full w-full object-cover"
-                />
+            
+            {/* Right column - Image with rounded corners */}
+            <div className="relative h-[350px] md:h-[450px] rounded-2xl overflow-hidden shadow-xl">
+              <img 
+                src={condo.images[activeImageIndex]}
+                alt={`${condo.name} - ${activeImageIndex + 1}`}
+                className="absolute w-full h-full object-cover rounded-2xl"
+              />
               
               {/* Image Navigation */}
               <div className="absolute inset-x-0 bottom-4 flex justify-center space-x-2">
@@ -152,108 +123,119 @@ export default function CondoHeroSection({
                   </svg>
                 </Button>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Additional Content Sections */}
+      <div className="bg-background">
+        {/* Condo Information Section */}
+        <div className="container mx-auto px-4 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            {/* Left Column - Condo Details */}
+            <div className="md:col-span-8">
+              
+              {/* Key Facts */}
+              <div className="mt-8">
+                <h2 className="text-xl font-semibold mb-4">Key Facts</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Property Type</p>
+                    <p className="font-medium">{condo.propertyType}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Year Built</p>
+                    <p className="font-medium">{condo.yearBuilt}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Developer</p>
+                    <p className="font-medium">{condo.developer}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Architect</p>
+                    <p className="font-medium">{condo.architect}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Stories</p>
+                    <p className="font-medium">{condo.stories}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Suites</p>
+                    <p className="font-medium">{condo.suites}</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Amenities Section */}
+              <div className="mt-8">
+                <h2 className="text-xl font-semibold mb-4">Amenities</h2>
+                <div className="flex flex-wrap gap-2">
+                  {condo.amenities.map((amenity, index) => (
+                    <span key={index} className="bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm">
+                      {amenity}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            {/* Right Column - Listings */}
+            <div className="md:col-span-4">
+              <div className="bg-card p-6 rounded-lg border shadow-sm">
+                <h2 className="text-xl font-semibold mb-4">Listings</h2>
+                
+                <Tabs defaultValue="sale" className="w-full">
+                  <TabsList className="grid grid-cols-2 mb-4">
+                    <TabsTrigger value="sale">For Sale ({listings.forSale})</TabsTrigger>
+                    <TabsTrigger value="rent">For Rent ({listings.forRent})</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="sale" className="space-y-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Average Price</p>
+                      <p className="text-2xl font-bold">{listings.averagePrice}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Price Per Sq.Ft.</p>
+                      <p className="text-lg font-medium">{listings.averagePricePerSqft}</p>
+                    </div>
+                    <Button className="w-full mt-4">View All Listings</Button>
+                  </TabsContent>
+                  
+                  <TabsContent value="rent" className="space-y-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Average Rent</p>
+                      <p className="text-2xl font-bold">{listings.averageRent}</p>
+                    </div>
+                    <Button className="w-full mt-4">View All Rentals</Button>
+                  </TabsContent>
+                </Tabs>
+                
+                {/* Agent Information */}
+                <div className="mt-6 pt-6 border-t">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="relative w-16 h-16 overflow-hidden">
+                      <img 
+                        src={agent.image}
+                        alt={agent.name}
+                        className="rounded-full object-cover w-full h-full" 
+                      />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">{agent.name}</h3>
+                      <p className="text-sm text-muted-foreground">{agent.title}</p>
+                    </div>
+                  </div>
+                  <ContactAgentButton />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
-      {/* Condo Information Section */}
-      <div className="container mx-auto px-4 py-6 md:py-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          {/* Left Column - Condo Details */}
-          <div className="md:col-span-8">
-            
-            {/* Key Facts */}
-            <div className="mt-8">
-              <h2 className="text-xl font-semibold mb-4">Key Facts</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Property Type</p>
-                  <p className="font-medium">{condo.propertyType}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Year Built</p>
-                  <p className="font-medium">{condo.yearBuilt}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Developer</p>
-                  <p className="font-medium">{condo.developer}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Architect</p>
-                  <p className="font-medium">{condo.architect}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Stories</p>
-                  <p className="font-medium">{condo.stories}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Suites</p>
-                  <p className="font-medium">{condo.suites}</p>
-                </div>
-              </div>
-            </div>
-            
-            {/* Amenities Section */}
-            <div className="mt-8">
-              <h2 className="text-xl font-semibold mb-4">Amenities</h2>
-              <div className="flex flex-wrap gap-2">
-                {condo.amenities.map((amenity, index) => (
-                  <span key={index} className="bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm">
-                    {amenity}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-          
-          {/* Right Column - Listings */}
-          <div className="md:col-span-4">
-            <div className="bg-card p-6 rounded-lg border shadow-sm">
-              <h2 className="text-xl font-semibold mb-4">Listings</h2>
-              
-              <Tabs defaultValue="sale" className="w-full">
-                <TabsList className="grid grid-cols-2 mb-4">
-                  <TabsTrigger value="sale">For Sale ({listings.forSale})</TabsTrigger>
-                  <TabsTrigger value="rent">For Rent ({listings.forRent})</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="sale" className="space-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Average Price</p>
-                    <p className="text-2xl font-bold">{listings.averagePrice}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Price Per Sq.Ft.</p>
-                    <p className="text-lg font-medium">{listings.averagePricePerSqft}</p>
-                  </div>
-                  <Button className="w-full mt-4">View All Listings</Button>
-                </TabsContent>
-                
-                <TabsContent value="rent" className="space-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Average Rent</p>
-                    <p className="text-2xl font-bold">{listings.averageRent}</p>
-                  </div>
-                  <Button className="w-full mt-4">View All Rentals</Button>
-                </TabsContent>
-              </Tabs>
-              
-              <div className="mt-6 pt-6 border-t">
-                <Button variant="outline" className="w-full" size="lg">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 size-4">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="7 10 12 15 17 10" />
-                    <line x1="12" y1="15" x2="12" y2="3" />
-                  </svg>
-                  Download Building Info
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
+
+export default CondoHeroSection;

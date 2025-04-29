@@ -68,7 +68,7 @@ const items = [
 
 const Testimonials = ({
   direction = "left",
-  speed = "fast",
+  speed = "slow",
   pauseOnHover = true,
   className
 }) => {

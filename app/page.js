@@ -6,8 +6,7 @@ import CustomerExperience from "@/components/home/CustomerExperience";
 import EmblaCarousel from "@/components/home/EmblaCarousel";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import Testimonials from "@/components/home/Testimonials";
-import EducationalContent from "@/components/home/EducationalContent";
-import Newsletter from "@/components/home/Newsletter";
+import FaqSection from "@/components/home/FaqSection";
 
 export default function Home() {
   return (
@@ -41,11 +40,8 @@ export default function Home() {
       {/* Testimonials Section */}
       <Testimonials />
       
-      {/* Educational Content Section */}
-      <EducationalContent />
-      
-      {/* Newsletter Section */}
-      <Newsletter />
+      {/* FAQ Section */}
+      <FaqSection />
     </div>
   );
 }

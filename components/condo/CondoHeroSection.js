@@ -241,9 +241,9 @@ function CondoHeroSection ({
         {/* Second row of cards with reversed styling */}
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            {/* Left Column - Agent-styled card */}
+            {/* Left Column - Neighborhood Insights (no card styling, with padding) */}
             <div className="md:col-span-4">
-              <div className="p-8 md:p-10 rounded-lg shadow-sm bg-[#e3dfcf] flex flex-col h-full">
+              <div className="p-8 md:p-10 flex flex-col h-full">
                 <div className="inline-block text-gray-700 font-semibold mb-4">Neighborhood Insights</div>
                 <div className="space-y-4">
                   <div>
@@ -259,17 +259,11 @@ function CondoHeroSection ({
                     <p className="text-lg font-medium">75/100 - Very Bikeable</p>
                   </div>
                   
-                  <div className="mt-4 border-t border-gray-300 pt-4">
+                  <div className="mt-4">
                     <p className="text-sm text-gray-700">
                       {condo.neighborhood} is known for its excellent accessibility, with shops, restaurants, and services all within easy walking distance.
                     </p>
                   </div>
-                </div>
-                
-                <div className="mt-auto pt-6">
-                  <button className="w-full bg-gray-800 hover:bg-black text-white py-3 px-6 rounded-md transition-colors font-medium">
-                    Explore Neighborhood
-                  </button>
                 </div>
               </div>
             </div>

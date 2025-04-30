@@ -1,5 +1,7 @@
 import { getListingById, fetchMediaForListing } from '@/lib/actions/listings';
 import PropertyImageGallery from '@/components/PropertyImageGallery';
+import ListingDataSection from './ListingDataSection';
+import TruncatedDescription from './TruncatedDescription';
 
 export default async function ListingPage({ params }) {
   const { listingKey } = await params;
@@ -62,54 +64,38 @@ export default async function ListingPage({ params }) {
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-8 mb-6">
                       <div>
-                        <p className="text-sm text-gray-600 font-medium">Bedrooms</p>
-                        <p className="text-lg font-medium">{listing.BedroomsTotal}</p>
+                        <p className="text-sm text-gray-600 font-medium">Beds</p>
+                        <p className="text-lg font-medium">{listing.BedroomsTotal || 'N/A'}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600 font-medium">Bathrooms</p>
-                        <p className="text-lg font-medium">{listing.BathroomsTotalInteger}</p>
+                        <p className="text-sm text-gray-600 font-medium">Baths</p>
+                        <p className="text-lg font-medium">{listing.BathroomsTotalInteger || 'N/A'}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600 font-medium">Living Area</p>
-                        <p className="text-lg font-medium">{listing.LivingArea} {listing.LivingAreaUnits}</p>
+                        <p className="text-sm text-gray-600 font-medium">Parking</p>
+                        <p className="text-lg font-medium">{listing.ParkingTotal || 'N/A'}</p>
                       </div>
-                      {listing.LotSize && (
-                        <div>
-                          <p className="text-sm text-gray-600 font-medium">Lot Size</p>
-                          <p className="text-lg font-medium">{listing.LotSize} {listing.LotSizeUnits}</p>
-                        </div>
-                      )}
-                      {listing.YearBuilt && (
-                        <div>
-                          <p className="text-sm text-gray-600 font-medium">Year Built</p>
-                          <p className="text-lg font-medium">{listing.YearBuilt}</p>
-                        </div>
-                      )}
-                      {listing.PropertyType && (
-                        <div>
-                          <p className="text-sm text-gray-600 font-medium">Property Type</p>
-                          <p className="text-lg font-medium">{listing.PropertyType}</p>
-                        </div>
-                      )}
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Square Feet</p>
+                        <p className="text-lg font-medium">{listing.LivingArea ? `${listing.LivingArea} ${listing.LivingAreaUnits || 'sq ft'}` : 'N/A'}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Possession</p>
+                        <p className="text-lg font-medium">{listing.PossessionDate || 'N/A'}</p>
+                      </div>
                     </div>
                     
-                    {/* Add price information */}
+                    {/* Description with Read More button and fade effect using client component */}
                     <div className="mt-auto">
-                      <h3 className="text-lg font-semibold mb-3">Price</h3>
-                      <div className="bg-white/60 text-gray-800 px-4 py-2 rounded-lg text-xl font-semibold inline-block">
-                        ${formattedPrice}
-                      </div>
+                      <h3 className="text-lg font-semibold mb-3">Description</h3>
+                      <TruncatedDescription description={listing.PublicRemarks} />
                     </div>
                   </div>
                 </div>
                 
-                {/* Full width description section within the left column */}
-                {listing.PublicRemarks && (
-                  <div className="mt-6">
-                    <h3 className="text-xl font-semibold mb-4 text-gray-800">Full Description</h3>
-                    <p className="text-gray-700 whitespace-pre-line leading-relaxed">{listing.PublicRemarks}</p>
-                  </div>
-                )}
+                {/* Now removing the separate full description section since it's in the Key Facts card */}
+                {/* Client-side component for listing data with search functionality */}
+                <ListingDataSection listing={listing} />
               </div>
               
               {/* Sidebar with sticky contact card */}

@@ -7,8 +7,10 @@ export default function ClientHeader({ user }) {
   const pathname = usePathname();
   
   // Check if the current page has a dark hero section
-  // Currently, only the [condoAddress] page has a dark hero
-  const hasDarkHero = pathname.match(/^\/[^\/]+$/) && pathname !== '/';
+  // This includes both the [condoAddress] page and [listingKey] pages
+  const isCondoPage = pathname.match(/^\/[^\/]+$/) && pathname !== '/';
+  const isListingPage = pathname.match(/^\/[^\/]+\/[^\/]+$/);
+  const hasDarkHero = isCondoPage || isListingPage;
   
   return (
     <SecfiStyleHeader user={user} hasDarkHero={hasDarkHero} />

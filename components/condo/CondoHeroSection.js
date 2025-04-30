@@ -131,7 +131,7 @@ function CondoHeroSection ({
       {/* Additional Content Sections */}
       <div className="bg-[#fbfbf9]">
         {/* Condo Information Section */}
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 pt-16 pb-8">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             {/* Left Column - Condo Details */}
             <div className="md:col-span-8 flex flex-col">
@@ -232,6 +232,102 @@ function CondoHeroSection ({
                 
                 <div className="mt-auto">
                   <ContactAgentButton />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Second row of cards with reversed styling */}
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            {/* Left Column - Agent-styled card */}
+            <div className="md:col-span-4">
+              <div className="p-8 md:p-10 rounded-lg shadow-sm bg-[#e3dfcf] flex flex-col h-full">
+                <div className="inline-block text-gray-700 font-semibold mb-4">Neighborhood Insights</div>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-sm text-gray-600 font-medium">Walk Score</p>
+                    <p className="text-lg font-medium">92/100 - Walker's Paradise</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 font-medium">Transit Score</p>
+                    <p className="text-lg font-medium">95/100 - World-class Transit</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 font-medium">Bike Score</p>
+                    <p className="text-lg font-medium">75/100 - Very Bikeable</p>
+                  </div>
+                  
+                  <div className="mt-4 border-t border-gray-300 pt-4">
+                    <p className="text-sm text-gray-700">
+                      {condo.neighborhood} is known for its excellent accessibility, with shops, restaurants, and services all within easy walking distance.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="mt-auto pt-6">
+                  <button className="w-full bg-gray-800 hover:bg-black text-white py-3 px-6 rounded-md transition-colors font-medium">
+                    Explore Neighborhood
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            {/* Right Column - Building-styled card */}
+            <div className="md:col-span-8 flex flex-col">
+              <div className="h-full">
+                <div className="p-8 md:p-10 rounded-xl bg-white shadow-[0_17px_37px_0_rgba(41,42,45,.02),0_67px_67px_0_rgba(41,42,45,.02),0_150px_90px_0_rgba(41,42,45,.012),0_267px_107px_0_rgba(41,42,45,0),0_417px_117px_0_rgba(41,42,45,0)] h-full">
+                  <div className="flex flex-col h-full">
+                    <div className="inline-block text-gray-700 font-semibold mb-2">Building History</div>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-8 mb-6">
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Original Construction</p>
+                        <p className="text-lg font-medium">{condo.yearBuilt}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Last Renovation</p>
+                        <p className="text-lg font-medium">2020</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Previous Name</p>
+                        <p className="text-lg font-medium">Liberty Heights</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Historical Designation</p>
+                        <p className="text-lg font-medium">None</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Site History</p>
+                        <p className="text-lg font-medium">Former industrial</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Neighborhood Est.</p>
+                        <p className="text-lg font-medium">1884</p>
+                      </div>
+                    </div>
+                    
+                    <p className="text-gray-600 mt-4 mb-6">
+                      {condo.name} was built on a former industrial site that was redeveloped as part of the {condo.neighborhood} revitalization project. The building was designed to complement the historical character of the area while offering modern amenities.
+                    </p>
+                    
+                    {/* Historical Highlights Section */}
+                    <div className="mt-auto">
+                      <h3 className="text-lg font-semibold mb-3">Historical Highlights</h3>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="bg-white/60 text-gray-800 px-3 py-1 rounded-full text-sm">
+                          Industrial Heritage
+                        </span>
+                        <span className="bg-white/60 text-gray-800 px-3 py-1 rounded-full text-sm">
+                          Urban Renewal
+                        </span>
+                        <span className="bg-white/60 text-gray-800 px-3 py-1 rounded-full text-sm">
+                          Sustainable Design
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

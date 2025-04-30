@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { ContactAgentButton } from "@/components/condo/ContactAgentButton";
 
-function CondoHeroSection ({ 
+function CondoHeroSection ({
   condoAddress,
   condo = {
     name: "Liberty Lakeview Towers",
@@ -129,104 +129,108 @@ function CondoHeroSection ({
       </section>
 
       {/* Additional Content Sections */}
-      <div className="bg-background">
+      <div className="bg-[#fbfbf9]">
         {/* Condo Information Section */}
         <div className="container mx-auto px-4 py-16">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             {/* Left Column - Condo Details */}
-            <div className="md:col-span-8">
+            <div className="md:col-span-8 flex flex-col">
               
               {/* Key Facts */}
-              <div className="mt-8">
-                <h2 className="text-xl font-semibold mb-4">Key Facts</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Property Type</p>
-                    <p className="font-medium">{condo.propertyType}</p>
+              <div className="h-full">
+                <div className="p-8 md:p-10 rounded-lg shadow-sm h-full" style={{ background: "linear-gradient(28.01deg, #dadae0 16.6%, #ebebe6 82.01%)" }}>
+                  <div className="flex flex-col h-full">
+                    <div className="inline-block text-gray-700 font-semibold mb-2">Building Information</div>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-8 mb-6">
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Property Type</p>
+                        <p className="text-lg font-medium">{condo.propertyType}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Year Built</p>
+                        <p className="text-lg font-medium">{condo.yearBuilt}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Developer</p>
+                        <p className="text-lg font-medium">{condo.developer}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Architect</p>
+                        <p className="text-lg font-medium">{condo.architect}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Stories</p>
+                        <p className="text-lg font-medium">{condo.stories}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Suites</p>
+                        <p className="text-lg font-medium">{condo.suites}</p>
+                      </div>
+                    </div>
+                    
+                    <p className="text-gray-600 mt-4 mb-6">
+                      Located in the heart of {condo.neighborhood}, {condo.name} offers modern urban living with exceptional amenities and convenient access to the city's best attractions.
+                    </p>
+                    
+                    {/* Amenities Section inside card */}
+                    <div className="mt-auto">
+                      <h3 className="text-lg font-semibold mb-3">Amenities</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {condo.amenities.map((amenity, index) => (
+                          <span key={index} className="bg-white/60 text-gray-800 px-3 py-1 rounded-full text-sm">
+                            {amenity}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Year Built</p>
-                    <p className="font-medium">{condo.yearBuilt}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Developer</p>
-                    <p className="font-medium">{condo.developer}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Architect</p>
-                    <p className="font-medium">{condo.architect}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Stories</p>
-                    <p className="font-medium">{condo.stories}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Suites</p>
-                    <p className="font-medium">{condo.suites}</p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Amenities Section */}
-              <div className="mt-8">
-                <h2 className="text-xl font-semibold mb-4">Amenities</h2>
-                <div className="flex flex-wrap gap-2">
-                  {condo.amenities.map((amenity, index) => (
-                    <span key={index} className="bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm">
-                      {amenity}
-                    </span>
-                  ))}
                 </div>
               </div>
             </div>
             
             {/* Right Column - Listings */}
             <div className="md:col-span-4">
-              <div className="bg-card p-6 rounded-lg border shadow-sm">
-                <h2 className="text-xl font-semibold mb-4">Listings</h2>
-                
-                <Tabs defaultValue="sale" className="w-full">
-                  <TabsList className="grid grid-cols-2 mb-4">
-                    <TabsTrigger value="sale">For Sale ({listings.forSale})</TabsTrigger>
-                    <TabsTrigger value="rent">For Rent ({listings.forRent})</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="sale" className="space-y-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Average Price</p>
-                      <p className="text-2xl font-bold">{listings.averagePrice}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Price Per Sq.Ft.</p>
-                      <p className="text-lg font-medium">{listings.averagePricePerSqft}</p>
-                    </div>
-                    <Button className="w-full mt-4">View All Listings</Button>
-                  </TabsContent>
-                  
-                  <TabsContent value="rent" className="space-y-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Average Rent</p>
-                      <p className="text-2xl font-bold">{listings.averageRent}</p>
-                    </div>
-                    <Button className="w-full mt-4">View All Rentals</Button>
-                  </TabsContent>
-                </Tabs>
-                
+              <div className="p-8 md:p-10 rounded-lg shadow-sm bg-[#e3dfcf] flex flex-col items-center text-center h-full">
                 {/* Agent Information */}
-                <div className="mt-6 pt-6 border-t">
-                  <div className="flex items-center gap-4 mb-4">
+                <div className="w-full flex flex-col items-center">
+                  <div className="flex items-center mb-6 gap-4">
                     <div className="relative w-16 h-16 overflow-hidden">
                       <img 
                         src={agent.image}
                         alt={agent.name}
-                        className="rounded-full object-cover w-full h-full" 
+                        className="rounded-full object-cover w-full h-full border-2 border-white" 
                       />
                     </div>
-                    <div>
-                      <h3 className="font-medium">{agent.name}</h3>
-                      <p className="text-sm text-muted-foreground">{agent.title}</p>
+                    <div className="text-left">
+                      <h3 className="text-lg font-medium">{agent.name}</h3>
+                      <p className="text-sm text-gray-700">{agent.title}</p>
                     </div>
                   </div>
+                  
+                  <div className="space-y-3 mt-2 w-full">
+                    
+                    <div className="flex items-center gap-2 w-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-4 text-gray-700 flex-shrink-0">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                      </svg>
+                      <span className="text-sm overflow-hidden text-ellipsis">{agent.phone}</span>
+                    </div>
+                    <div className="flex items-center gap-2 w-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-4 text-gray-700 flex-shrink-0">
+                        <rect width="20" height="16" x="2" y="4" rx="2" />
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                      </svg>
+                      <span className="text-sm overflow-hidden text-ellipsis">{agent.email}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 border-t border-gray-300 pt-4 w-full">
+                    <p className="text-sm text-gray-700">{agent.bio}</p>
+                  </div>
+                </div>
+                
+                <div className="mt-auto">
                   <ContactAgentButton />
                 </div>
               </div>

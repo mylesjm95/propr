@@ -20,7 +20,7 @@ const navItems = [
   { name: "Contact", link: "#contact" },
 ];
 
-export default function SecfiStyleHeader({ user }) {
+export default function SecfiStyleHeader({ user, hasDarkHero = false }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
@@ -68,7 +68,7 @@ export default function SecfiStyleHeader({ user }) {
         <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="text-xl font-bold text-gray-900">Propr</span>
+            <span className={`text-xl font-bold ${hasDarkHero ? 'text-white' : 'text-gray-900'}`}>Propr</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -77,7 +77,7 @@ export default function SecfiStyleHeader({ user }) {
               <Link 
                 key={`nav-item-${idx}`} 
                 href={item.link}
-                className="text-sm font-medium text-gray-800 hover:opacity-80"
+                className={`text-sm font-medium ${hasDarkHero ? 'text-white hover:opacity-80' : 'text-gray-800 hover:opacity-80'}`}
               >
                 {item.name}
               </Link>
@@ -87,9 +87,9 @@ export default function SecfiStyleHeader({ user }) {
           {/* Auth Section */}
           <div className="flex items-center space-x-4">
             {isLoggedIn ? (
-              <UserDropdown user={user} isLight={false} />
+              <UserDropdown user={user} isLight={hasDarkHero} />
             ) : (
-              <AuthModalButton isLight={false} />
+              <AuthModalButton isLight={hasDarkHero} />
             )}
           </div>
         </div>
@@ -111,7 +111,7 @@ export default function SecfiStyleHeader({ user }) {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item, idx) => (
-              <Link 
+              <Link
                 key={`nav-item-${idx}`} 
                 href={item.link}
                 className="text-sm font-medium text-gray-800 hover:opacity-80"

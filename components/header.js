@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { AuthModalButton } from "@/components/auth/AuthModalButton";
-import SecfiStyleHeader from "./SecfiStyleHeader";
+import ClientHeader from "./ClientHeader";
 
 // Navigation items
 const navItems = [
@@ -24,8 +24,10 @@ export default async function Header() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   
+  // We need to determine if the current page has a dark hero section
+  // For now, we'll use a dynamic approach with client-side header
   return (
-    <SecfiStyleHeader user={user} />
+    <ClientHeader user={user} />
   );
 }
 

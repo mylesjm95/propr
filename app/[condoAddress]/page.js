@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import CondoHeroSection from '@/components/condo/CondoHeroSection';
-// import AvailableListings from '@/components/condo/AvailableListings';
+import AvailableListings from '@/components/condo/AvailableListings';
 // import UnavailableListingsServer from '@/components/condo/UnavailableListingsServer';
-// import ListingCardSkeleton from '@/components/ListingCardSkeleton';
+import ListingCardSkeleton from '@/components/ListingCardSkeleton';
 // import FloatingUpdateButton from '@/components/condo/FloatingUpdateButton';
 
 export default async function CondoPage({ params }) {
@@ -23,7 +23,7 @@ export default async function CondoPage({ params }) {
       </section> */}
 
       {/* Available Listings Section */}
-      {/* <section className="max-w-7xl mx-auto px-4 py-12 border-t border-gray-200">
+      <section className="max-w-7xl mx-auto px-4 py-12 border-t border-gray-200">
         <h2 className="text-3xl font-bold mb-8">Available Listings at {decodeURIComponent(condoAddress)}</h2>
 
         <Suspense fallback={
@@ -35,7 +35,7 @@ export default async function CondoPage({ params }) {
         }>
           <AvailableListings condoAddress={condoAddress} agentName={agentName} />
         </Suspense>
-      </section> */}
+      </section>
 
       {/* Listing History Timeline Section */}
       {/* <section className="max-w-7xl mx-auto px-4 py-12 border-t border-gray-200">

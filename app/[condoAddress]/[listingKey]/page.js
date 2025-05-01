@@ -2,6 +2,7 @@ import { getListingById, fetchMediaForListing } from '@/lib/actions/listings';
 import PropertyImageGallery from '@/components/PropertyImageGallery';
 import ListingDataSection from './ListingDataSection';
 import TruncatedDescription from './TruncatedDescription';
+import GoogleMapCard from './GoogleMapCard';
 
 export default async function ListingPage({ params }) {
   const { listingKey } = await params;
@@ -96,10 +97,38 @@ export default async function ListingPage({ params }) {
                 {/* Now removing the separate full description section since it's in the Key Facts card */}
                 {/* Client-side component for listing data with search functionality */}
                 <ListingDataSection listing={listing} />
+                
+                {/* Google Map Card */}
+                <div className="mt-10 mb-8">
+                  <h3 className="text-xl font-semibold mb-5 text-gray-800">Location</h3>
+                  <div className="p-8 md:p-10 rounded-lg shadow-sm" style={{ background: "linear-gradient(28.01deg, #dadae0 16.6%, #ebebe6 82.01%)" }}>
+                    <div className="h-[350px]">
+                      <GoogleMapCard 
+                        address={listing.UnparsedAddress} 
+                        lat={listing.Latitude} 
+                        lng={listing.Longitude}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
               
-              {/* Sidebar with sticky contact card */}
-              <div className="relative">
+              {/* Sidebar with price card and sticky contact card */}
+              <div className="relative space-y-4">
+                {/* Price card */}
+                <div className="p-8 md:p-10 rounded-lg shadow-sm bg-[#e3dfcf] flex flex-col">
+                  <div className="inline-block text-gray-700 font-semibold mb-4">Price</div>
+                  <div className="text-3xl font-bold text-gray-800">
+                    ${formattedPrice}
+                  </div>
+                  {listing.ListingTerms && (
+                    <div className="mt-1 text-sm text-gray-600">
+                      {listing.ListingTerms}
+                    </div>
+                  )}
+                </div>
+                
+                {/* Contact card */}
                 <div className="sticky top-24 p-8 md:p-10 rounded-lg shadow-sm bg-[#e3dfcf] flex flex-col">
                   <div className="inline-block text-gray-700 font-semibold mb-4">Contact</div>
                   <div className="space-y-4">

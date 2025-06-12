@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { createPropertyQuery } from '@/lib/odata';
 
 // Vercel Cron Job endpoint
-export const maxDuration = 300; // Set maximum execution duration to 300 seconds (5 minutes)
+export const maxDuration = 60; // Set maximum execution duration to 60 seconds (1 minute)
 
 export async function GET(request) {
   // Verify the request is from Vercel Cron

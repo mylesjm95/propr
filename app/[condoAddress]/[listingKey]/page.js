@@ -119,7 +119,7 @@ export default async function ListingPage({ params }) {
                 <div className="p-8 md:p-10 rounded-lg shadow-sm bg-[#e3dfcf] flex flex-col">
                   <div className="inline-block text-gray-700 font-semibold mb-4">Price</div>
                   <div className="text-3xl font-bold text-gray-800">
-                    ${formattedPrice}
+                    ${formattedPrice}{listing.TransactionType && listing.TransactionType.toLowerCase().includes('lease') ? '/month' : ''}
                   </div>
                   {listing.ListingTerms && (
                     <div className="mt-1 text-sm text-gray-600">

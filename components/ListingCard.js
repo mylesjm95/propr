@@ -4,6 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FiHeart } from "react-icons/fi";
+import { IoBedOutline } from "react-icons/io5";
+import { FaBath, FaParking } from "react-icons/fa";
+import { TbRulerMeasure } from "react-icons/tb";
 import { toggleFavoriteListing } from '@/lib/actions/favorites';
 import { useRouter } from 'next/navigation';
 
@@ -108,32 +111,31 @@ export default function ListingCard({ listing, condoAddress, agentName, initialI
             {listing.UnparsedAddress}
           </p>
           
-          {/* Main specs without icons */}
-          <div className="flex items-center gap-4 mb-3 text-sm">
-            <div>
-              {listing.BedroomsTotal || 0}{listing.BedroomsTotal === 1 ? ' BD' : ' BDs'}
+          {/* Main specs with icons on a single line */}
+          <div className="flex items-center gap-3 mb-3 text-sm text-gray-700">
+            <div className="flex items-center gap-1">
+              <IoBedOutline className="w-4 h-4 text-gray-600" />
+              <span>{listing.BedroomsTotal || 0}</span>
             </div>
-            <div>
-              {listing.BathroomsTotalInteger || 0}{listing.BathroomsTotalInteger === 1 ? ' BA' : ' BAs'}
+            <div className="flex items-center gap-1">
+              <FaBath className="w-3.5 h-3.5 text-gray-600" />
+              <span>{listing.BathroomsTotalInteger || 0}</span>
             </div>
-            <div>
-              {listing.LivingAreaRange || 0} sqft
+            {listing.ParkingTotal > 0 && (
+              <div className="flex items-center gap-1">
+                <FaParking className="w-3.5 h-3.5 text-gray-600" />
+                <span>{listing.ParkingTotal}</span>
+              </div>
+            )}
+            <div className="flex items-center gap-1">
+              <TbRulerMeasure className="w-4 h-4 text-gray-600" />
+              <span>{listing.LivingAreaRange || 0}</span>
             </div>
           </div>
           
           {/* Additional info */}
           <div className="flex justify-between text-xs text-gray-600">
             <div className="flex flex-wrap gap-2">
-              {listing.ParkingTotal > 0 && (
-                <span className="flex items-center gap-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
-                    <path d="M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25zM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875h.375a3 3 0 116 0h3a.75.75 0 00.75-.75V15z" />
-                    <path d="M8.25 19.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0zM15.75 6.75a.75.75 0 00-.75.75v11.25c0 .087.015.17.042.248a3 3 0 015.958.464c.853-.175 1.522-.935 1.464-1.883a18.659 18.659 0 00-3.732-10.104 1.837 1.837 0 00-1.47-.725H15.75z" />
-                    <path d="M19.5 19.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
-                  </svg>
-                  {listing.ParkingTotal} Parking
-                </span>
-              )}
               {listing.MlsStatus && (
                 <span className="bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded-sm font-medium">
                   {listing.MlsStatus}

@@ -39,44 +39,46 @@ export default async function Settings() {
   const authenticatedUser = authData.user;
 
   return (
-    <div className="container max-w-4xl py-10">
-      <h1 className="text-3xl font-bold mb-8">Account Settings</h1>
-      <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="mb-8">
-          <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="security">Security</TabsTrigger>
-          <TabsTrigger value="sessions">Sessions</TabsTrigger>
-          <TabsTrigger value="saved-searches">Saved Searches</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="profile" className="space-y-8">
-          <div className="bg-card rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-6">Profile Information</h2>
-            <ProfileForm user={authenticatedUser} profile={profile} />
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="security" className="space-y-8">
-          <div className="bg-card rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-6">Security Settings</h2>
-            <SecuritySettings user={authenticatedUser} />
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="sessions" className="space-y-8">
-          <div className="bg-card rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-6">Current Session</h2>
-            <SessionsTable session={session} user={authenticatedUser} />
-          </div>
-        </TabsContent>
+    <div className="container max-w-6xl mx-auto px-4 py-16">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8">Account Settings</h1>
+        <Tabs defaultValue="profile" className="w-full">
+          <TabsList className="mb-8">
+            <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="security">Security</TabsTrigger>
+            <TabsTrigger value="sessions">Sessions</TabsTrigger>
+            <TabsTrigger value="saved-searches">Saved Searches</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="profile" className="space-y-8">
+            <div className="bg-card rounded-lg shadow p-6">
+              <h2 className="text-xl font-semibold mb-6">Profile Information</h2>
+              <ProfileForm user={authenticatedUser} profile={profile} />
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="security" className="space-y-8">
+            <div className="bg-card rounded-lg shadow p-6">
+              <h2 className="text-xl font-semibold mb-6">Security Settings</h2>
+              <SecuritySettings user={authenticatedUser} />
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="sessions" className="space-y-8">
+            <div className="bg-card rounded-lg shadow p-6">
+              <h2 className="text-xl font-semibold mb-6">Current Session</h2>
+              <SessionsTable session={session} user={authenticatedUser} />
+            </div>
+          </TabsContent>
 
-        <TabsContent value="saved-searches" className="space-y-8">
-          <div className="bg-card rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-6">Building Alerts</h2>
-            <SavedSearches user={authenticatedUser} savedSearches={userData?.saved_searches || []} />
-          </div>
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="saved-searches" className="space-y-8">
+            <div className="bg-card rounded-lg shadow p-6">
+              <h2 className="text-xl font-semibold mb-6">Building Alerts</h2>
+              <SavedSearches user={authenticatedUser} savedSearches={userData?.saved_searches || []} />
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 }

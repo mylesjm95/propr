@@ -20,12 +20,21 @@ const navItems = [
 ];
 
 export default async function Header() {
-  // Get user session from server-side
+  // Get user session from server-side with error handling
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  let user = null;
   
-  // We need to determine if the current page has a dark hero section
-  // For now, we'll use a dynamic approach with client-side header
+  try {
+    const { data, error } = await supabase.auth.getUser();
+    if (!error && data.user) {
+      user = data.user;
+    }
+  } catch (error) {
+    console.error("Authentication error:", error.message);
+    // Continue without user data - they'll need to log in again
+  }
+  
+  // Pass user (or null) to client component
   return (
     <ClientHeader user={user} />
   );

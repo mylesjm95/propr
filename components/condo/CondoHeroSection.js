@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { ContactAgentButton } from "@/components/condo/ContactAgentButton";
+//
+import TriggerDailyEmailButton from '@/components/TriggerDailyEmailButton';
 
 function CondoHeroSection ({
   condoAddress,
@@ -67,9 +69,10 @@ function CondoHeroSection ({
               </p>
               
               <div className="mt-4">
-                <Button size="lg" className="text-lg px-8 py-6 bg-white text-[#292a2d] hover:bg-gray-200 rounded-md">
+                {/* <Button size="lg" className="text-lg px-8 py-6 bg-white text-[#292a2d] hover:bg-gray-200 rounded-md">
                   View Listings
-                </Button>
+                </Button> */}
+                <TriggerDailyEmailButton />
               </div>
             </div>
             

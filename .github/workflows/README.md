@@ -8,7 +8,7 @@ This directory contains GitHub Actions workflows for the Propr application.
 
 **Purpose**: Automatically sends daily property update emails to users with saved searches.
 
-**Schedule**: Runs every day at 9:00 AM UTC
+**Schedule**: Runs every day at 10:00 AM UTC
 
 **Manual Trigger**: Can be triggered manually from the GitHub Actions tab
 

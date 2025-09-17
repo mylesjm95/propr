@@ -125,7 +125,7 @@ src/
 The project includes automated workflows for daily email notifications:
 
 ### Daily Email Workflow
-- **Schedule**: Runs daily at 9:00 AM UTC
+- **Schedule**: Runs daily at 10:00 AM UTC
 - **Purpose**: Sends property update emails to users with saved searches
 - **Manual Trigger**: Available in GitHub Actions tab
 

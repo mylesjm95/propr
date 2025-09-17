@@ -7,9 +7,18 @@ on:
   # Allow manual triggering for testing
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: daily-email-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   send-daily-emails:
     runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
     
     steps:
       - name: Checkout code
@@ -18,7 +27,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -47,14 +56,27 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           
           # AMPRE API
-          AMPRE_TOKEN: ${{ secrets.AMPRE_TOKEN }}
+          AMPRE_API_KEY: ${{ secrets.AMPRE_API_KEY }}
+          AMPRE_API_URL: ${{ secrets.AMPRE_API_URL }}
           
           # Email service
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
           
-          # Next.js
+          # Next.js (kept for compatibility if referenced)
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
 
       - name: Log completion
         run: echo "Daily email notifications sent successfully at $(date)"
+        
+      - name: Upload logs (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-email-logs
+          path: |
+            *.log
+            logs/
+          retention-days: 7

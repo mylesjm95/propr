@@ -1,0 +1,51 @@
+name: Daily Property Listings Email
+
+on:
+  schedule:
+    # Run every day at 9:00 AM UTC (adjust timezone as needed)
+    - cron: '0 9 * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  send-daily-emails:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Create environment file
+        run: |
+          cat > .env << EOF
+          NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AMPRE_API_KEY=${{ secrets.AMPRE_API_KEY }}
+          AMPRE_API_URL=${{ secrets.AMPRE_API_URL }}
+          RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+          FROM_EMAIL=${{ secrets.FROM_EMAIL }}
+          TO_EMAIL=${{ secrets.TO_EMAIL }}
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
+          EOF
+          
+      - name: Run daily email script
+        run: node scripts/send-daily-emails.js
+        
+      - name: Upload logs (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-email-logs
+          path: |
+            *.log
+            logs/
+          retention-days: 7

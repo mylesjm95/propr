@@ -1,0 +1,52 @@
+name: Test Daily Email (Manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_user_id:
+        description: 'User ID to test email for'
+        required: true
+        type: string
+
+jobs:
+  test-daily-email:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Create environment file
+        run: |
+          cat > .env << EOF
+          NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AMPRE_API_KEY=${{ secrets.AMPRE_API_KEY }}
+          AMPRE_API_URL=${{ secrets.AMPRE_API_URL }}
+          RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+          FROM_EMAIL=${{ secrets.FROM_EMAIL }}
+          TO_EMAIL=${{ secrets.TO_EMAIL }}
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
+          EOF
+          
+      - name: Test daily email for specific user
+        run: node scripts/send-daily-emails.js --test-user ${{ github.event.inputs.test_user_id }}
+        
+      - name: Upload test logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-email-logs-${{ github.run_number }}
+          path: |
+            *.log
+            logs/
+          retention-days: 7

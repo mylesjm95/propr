@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String        @id @db.Uuid
+  email         String        @unique
+  name          String?
+  role          String        @default("user") // user, admin, agent
+  assignedAgentId String?     @map("assigned_agent_id") @db.Uuid
+  assignedAgent Agent?        @relation("UserAgent", fields: [assignedAgentId], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  savedSearches SavedSearch[]
+  inquiries     Inquiry[]
+}
+
+model SavedSearch {
+  id              String   @id @default(uuid())
+  userId          String   @map("user_id") @db.Uuid
+  buildingSlug    String   @map("building_slug")
+  buildingAddress Json     @map("building_address")
+  emails          Json?    @default("[]")
+  preferences     Json?    @default("{}")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  isActive        Boolean  @default(true) @map("is_active")
+  lastEmailSent   DateTime? @map("last_email_sent")
+  emailFrequency  String   @default("daily") @map("email_frequency") // daily, weekly, monthly
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, buildingSlug])
+  @@map("saved_searches")
+}
+
+model Agent {
+  id          String     @id @default(uuid()) @db.Uuid
+  name        String
+  email       String     @unique
+  phone       String?
+  photo       String?    // URL to agent photo
+  bio         String?    // Agent bio/description
+  specialties String[]   @default([]) // Array of specialties
+  isActive    Boolean    @default(true) @map("is_active")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  
+  // Relations
+  assignedUsers User[]     @relation("UserAgent")
+  inquiries     Inquiry[]
+  buildingAgents BuildingAgent[]
+  
+  @@map("agents")
+}
+
+model Building {
+  id          String     @id @default(uuid()) @db.Uuid
+  name        String
+  slug        String     @unique
+  address     Json       // Full address object
+  description String?    // Building description
+  amenities   String[]   @default([]) // Building amenities
+  photos      String[]   @default([]) // Array of photo URLs
+  isActive    Boolean    @default(true) @map("is_active")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  
+  // Relations
+  inquiries   Inquiry[]
+  buildingAgents BuildingAgent[]
+  
+  @@map("buildings")
+}
+
+model BuildingAgent {
+  id         String   @id @default(uuid()) @db.Uuid
+  buildingId String   @map("building_id") @db.Uuid
+  agentId    String   @map("agent_id") @db.Uuid
+  isPrimary  Boolean  @default(false) @map("is_primary") // Primary agent for the building
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  building Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+  agent    Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  
+  @@unique([buildingId, agentId])
+  @@map("building_agents")
+}
+
+model Inquiry {
+  id          String     @id @default(uuid()) @db.Uuid
+  userId      String     @map("user_id") @db.Uuid
+  agentId     String?    @map("agent_id") @db.Uuid
+  buildingId  String?    @map("building_id") @db.Uuid
+  listingKey  String?    @map("listing_key") // MLS number if inquiry is about specific listing
+  type        String     // inquiry, tour_request, question, etc.
+  subject     String
+  message     String
+  status      String     @default("new") // new, in_progress, closed
+  priority    String     @default("normal") // low, normal, high, urgent
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  
+  // Relations
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  agent    Agent?   @relation(fields: [agentId], references: [id])
+  building Building? @relation(fields: [buildingId], references: [id])
+  
+  @@map("inquiries")
+}

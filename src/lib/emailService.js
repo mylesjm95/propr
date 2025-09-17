@@ -488,9 +488,10 @@ async function sendDailyEmail(userId) {
       return { success: true, data: 'No saved searches found' };
     }
     
-    // Always send email if user has saved searches, even if no updates
+    // Skip sending email if there are no listings
     if (updates.listings.length === 0) {
-      console.log(`No updates for user ${userId}, but sending email with no listings`);
+      console.log(`No listings found for user ${userId}, skipping email`);
+      return { success: true, data: 'No listings found, email not sent' };
     }
     
     const { listings, user: userData } = updates;
@@ -558,24 +559,35 @@ export async function sendDailyEmailsToAllUsers() {
     console.log(`Found ${usersWithSearches.length} users to send emails to`);
 
     const results = [];
+    let emailsSent = 0;
+    let emailsSkipped = 0;
     
     // Send emails to each user
     for (const user of usersWithSearches) {
       const result = await sendDailyEmail(user.id);
       results.push({ userId: user.id, ...result });
       
+      // Track different types of results
+      if (result.success) {
+        if (result.data === 'No saved searches found' || result.data === 'No listings found, email not sent') {
+          emailsSkipped++;
+        } else {
+          emailsSent++;
+        }
+      }
+      
       // Small delay to avoid overwhelming the API
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
-    const successful = results.filter(r => r.success).length;
     const failed = results.filter(r => !r.success).length;
     
-    console.log(`Daily email process completed. Successful: ${successful}, Failed: ${failed}`);
+    console.log(`Daily email process completed. Emails sent: ${emailsSent}, Skipped: ${emailsSkipped}, Failed: ${failed}`);
     
     return {
       total: usersWithSearches.length,
-      successful,
+      emailsSent,
+      emailsSkipped,
       failed,
       results
     };

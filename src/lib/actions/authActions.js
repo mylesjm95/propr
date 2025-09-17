@@ -149,3 +149,96 @@ export async function logout() {
     return { error: 'An unexpected error occurred. Please try again.' }
   }
 }
+
+export async function updateProfile(formData) {
+  try {
+    const supabase = await createClient()
+    
+    // Get current user
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    
+    if (userError || !user) {
+      return { error: 'User not authenticated' }
+    }
+
+    const name = formData.get('name')?.trim()
+    const email = formData.get('email')?.trim()
+
+    if (!name) {
+      return { error: 'Name is required' }
+    }
+
+    if (!email || !email.includes('@')) {
+      return { error: 'Please enter a valid email address' }
+    }
+
+    // Update user metadata
+    const { error: updateError } = await supabase.auth.updateUser({
+      data: { name },
+      email: email !== user.email ? email : undefined
+    })
+
+    if (updateError) {
+      return { error: updateError.message }
+    }
+
+    // Update user in database
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { 
+        name,
+        email: email !== user.email ? email : undefined
+      }
+    })
+
+    revalidatePath('/settings')
+    return { success: true }
+  } catch (error) {
+    console.error('Update profile error:', error)
+    return { error: 'An unexpected error occurred. Please try again.' }
+  }
+}
+
+export async function updatePassword(formData) {
+  try {
+    const supabase = await createClient()
+    
+    // Get current user
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    
+    if (userError || !user) {
+      return { error: 'User not authenticated' }
+    }
+
+    const currentPassword = formData.get('currentPassword')
+    const newPassword = formData.get('newPassword')
+    const confirmPassword = formData.get('confirmPassword')
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return { error: 'Please fill in all password fields' }
+    }
+
+    if (newPassword.length < 6) {
+      return { error: 'New password must be at least 6 characters long' }
+    }
+
+    if (newPassword !== confirmPassword) {
+      return { error: 'New passwords do not match' }
+    }
+
+    // Update password
+    const { error: updateError } = await supabase.auth.updateUser({
+      password: newPassword
+    })
+
+    if (updateError) {
+      return { error: updateError.message }
+    }
+
+    revalidatePath('/settings')
+    return { success: true }
+  } catch (error) {
+    console.error('Update password error:', error)
+    return { error: 'An unexpected error occurred. Please try again.' }
+  }
+}

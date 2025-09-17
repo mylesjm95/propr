@@ -1,10 +1,11 @@
-name: Daily Property Listings Email
+name: Daily Email Notifications
 
 on:
   schedule:
     # Run every day at 10:00 AM UTC (adjust timezone as needed)
     - cron: '0 10 * * *'
-  workflow_dispatch: # Allow manual triggering
+  # Allow manual triggering for testing
+  workflow_dispatch:
 
 jobs:
   send-daily-emails:
@@ -13,39 +14,47 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
-          
+
       - name: Install dependencies
         run: npm ci
-        
-      - name: Create environment file
-        run: |
-          cat > .env << EOF
-          NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          AMPRE_API_KEY=${{ secrets.AMPRE_API_KEY }}
-          AMPRE_API_URL=${{ secrets.AMPRE_API_URL }}
-          RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
-          FROM_EMAIL=${{ secrets.FROM_EMAIL }}
-          TO_EMAIL=${{ secrets.TO_EMAIL }}
-          DATABASE_URL=${{ secrets.DATABASE_URL }}
-          EOF
-          
-      - name: Run daily email script
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Verify database connection
+        run: npx prisma db pull --print
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        continue-on-error: true
+
+      - name: Send daily emails
         run: node scripts/send-daily-emails.js
-        
-      - name: Upload logs (on failure)
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: daily-email-logs
-          path: |
-            *.log
-            logs/
-          retention-days: 7
+        env:
+          # Database
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          
+          # Supabase
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          
+          # AMPRE API
+          AMPRE_TOKEN: ${{ secrets.AMPRE_TOKEN }}
+          
+          # Email service
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          
+          # Next.js
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+
+      - name: Log completion
+        run: echo "Daily email notifications sent successfully at $(date)"
